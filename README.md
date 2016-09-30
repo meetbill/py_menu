@@ -7,7 +7,7 @@
 ## usage
 
 > * [使用手册](docs/usage.md)
-> * [结构](docs/arch.md)
+> * [程序原理及结构](docs/arch.md)
 
 ## 输出结果
 
