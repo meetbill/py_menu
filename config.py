@@ -18,20 +18,20 @@ config_first = {
 
 config_secondary = [{
         'name': 'window1',
-        'items':  [("二级目录1_1","1_1"),
-                   ("二级目录1_2","1_2"),
-                   ("二级目录1_3","1_3"),
+        'items':  [("二级目录1_1","three1_1funtion"),
+                   ("二级目录1_2","three1_2funtion"),
+                   ("二级目录1_3","three1_3funtion"),
         ],
     },
     {
         'name': 'window2',
-        'items':  [("二级目录2_1","2_1"),
-                   ("二级目录2_2","2_2"),
+        'items':  [("二级目录2_1","three2_1funtion"),
+                   ("二级目录2_2","three2_2funtion"),
         ],
     },
     {
         'name': 'window3',
-        'items':  [("二级目录3_1","3_1"),
+        'items':  [("二级目录3_1","three3_1funtion"),
         ],
     },
 ]

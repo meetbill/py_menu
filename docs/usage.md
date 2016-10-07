@@ -14,20 +14,20 @@ config_first = {
 
 config_secondary = [{
         'name': 'window1',
-        'items':  [("二级目录1_1","1_1"),
-                   ("二级目录1_2","1_2"),
-                   ("二级目录1_3","1_3"),
+        'items':  [("二级目录1_1","three1_1funtion"),
+                   ("二级目录1_2","three1_2funtion"),
+                   ("二级目录1_3","three1_3funtion"),
         ],
     },
     {
         'name': 'window2',
-        'items':  [("二级目录2_1","2_1"),
-                   ("二级目录2_2","2_2"),
+        'items':  [("二级目录2_1","three2_1funtion"),
+                   ("二级目录2_2","three2_2funtion"),
         ],
     },
     {
         'name': 'window3',
-        'items':  [("二级目录3_1","3_1"),
+        'items':  [("二级目录3_1","three3_1funtion"),
         ],
     },
 ]
@@ -78,10 +78,9 @@ config_secondary = [{
 ```
 规范
 
-> * 三级编辑函数"three+三级标记+函数名" 如:three1_2funtion
-> * 三级标记-------------config.py 中的 config_secondary中每个窗口的items中元素的第二个值
-> * 三级标记必须具有唯一性
 
-### 二级目录中往三级编辑窗口函数跳转实现
+### 二级菜单配置中往三级编辑窗口函数跳转实现
 
-通过config.py中的三级标记实现自动匹配函数
+二级菜单中，二级菜单配置是一个列表，列表中的元素是元组，第一个参数是二级菜单中的显示内容，第二个参数是跳转到的三级函数名字
+
+'items':  [("二级目录3_1","three3_1funtion")],
