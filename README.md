@@ -1,5 +1,7 @@
 # py_menu
 
+[TOC]
+
 ## 展示
 
 ![Screenshot](images/test.jpg)
