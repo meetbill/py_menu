@@ -19,6 +19,8 @@ class Mask:
         self._row_grid = 0
         self._elements = {}
         self._buttons = 0
+        self._checks_box=0
+        self._checks_entrylist=[]
         
     def entry(self, label, name, text="", password=0):
         """
@@ -34,7 +36,7 @@ class Mask:
         """
         Creates  text.
         """
-        self.subgrid.setField( Label( label ), 0, self._row, (0,0,1,1) )
+        self.subgrid.setField( Label( label ), 0, self._row, (0,0,0,1) )
         #self.subgrid.setField( TextboxReflowed(self._width,text) , 1, self._row, (0,0,0,1) )
         self.subgrid.setField( TextboxReflowed(self._width,text, flexDown = 5, flexUp = 10, maxHeight = -1) , 1, self._row, (0,0,0,1) )
         self._row += 1
@@ -110,7 +112,37 @@ class Mask:
         self.subgrid.setField( self._elements[name], 1, self._row, (0,0,0,1), anchorLeft=1, growx=1 )
         
         self._row += 1
+    def checks_entry(self, label,name,checked,entry_list):
+        """
+            (labelname,name,checked,[ (label, name,text), ... ])
+        """
+        self._checks_box=name
+        self.subgrid.setField( Label( label ), 0, self._row)
+        self._elements[name] = Checkbox("")
+        self.subgrid.setField( self._elements[name], 1, self._row,anchorLeft=1)
+        self._elements[name].setCallback(self.checkBox_flag)
+        if checked:
+            self._elements[name].setValue('*')
+        self._row += 1
+        for option in entry_list:
+            (label,name,text) = option
+            self.subgrid.setField( Label( label ), 0, self._row)
+            self._elements[name] = Entry(self._width, text)
+            self._checks_entrylist.append(name)
+            self.subgrid.setField( self._elements[name], 1, self._row, (0,0,0,1) )
+            self._row += 1
+        self.checkBox_flag()
         
+    def checkBox_flag(self):
+        if self._checks_box:
+            if self._elements[self._checks_box].selected():
+                state = FLAGS_SET
+            else:
+                state = FLAGS_RESET
+
+            for i in self._checks_entrylist:
+                self._elements[i].setFlags(FLAG_DISABLED, state)
+
     def run(self,width = 0,height = 0):
         """
         Runs until a button is pressed.
