@@ -1,19 +1,22 @@
 # py_menu
 
-* [展示](#展示)
+* [项目概述及展示](#项目概述及展示)
 * [usage](#usage)
 * [输出结果](#输出结果)
 * [version](#version)
 * [参加步骤](#参加步骤)
 * [小额捐款](#小额捐款)
 
-## 展示
+## 项目概述及展示
+
+> * [项目](docs/project.md)
 
 ![Screenshot](images/test.jpg)
 
 ## usage
 
-> * [使用手册](docs/usage.md)
+> * [py_menu使用手册](docs/usage.md)
+> * snack_lib.py使用手册,可单独使用---------[snack_lib](docs/snack_lib.md)
 > * [程序原理及结构](docs/arch.md)
 
 ## 输出结果

@@ -80,7 +80,6 @@ config_secondary = [{
             return self.secondary_menu()
 
 ```
-规范
 
 
 ### 二级菜单配置中往三级编辑窗口函数跳转实现
