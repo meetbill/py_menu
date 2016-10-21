@@ -1,8 +1,13 @@
 # py_menu
 
+更简单操作和使用的终端菜单及管理
+
+(以下链接由 [Vim_IDE](https://github.com/BillWang139967/Vim)自动生成)
+
 * [项目概述及展示](#项目概述及展示)
 * [usage](#usage)
 * [输出结果](#输出结果)
+* [相关项目](#相关项目)
 * [version](#version)
 * [参加步骤](#参加步骤)
 * [小额捐款](#小额捐款)
@@ -28,6 +33,10 @@
 yes {'entry_test2': '0', 'entry_test3': '127.0.0.1', 'entry_test1': '0', 'radios': 'radios2', 'checks_list': ['checks4']}
 ```
 点击cancel时，输出no
+
+## 相关项目
+
+shell终端菜单--[shell_menu](https://github.com/BillWang139967/shell_menu.git)
 
 ## version
 ----
