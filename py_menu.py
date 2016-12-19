@@ -8,7 +8,7 @@ from mylib.BLog import Log
 from config import config_first
 from config import config_secondary
 import inspect
-__version__ = "1.1.0"
+__version__ = "1.1.1"
 
 def usage():
   print "<使用方法>"
@@ -43,7 +43,7 @@ class Menu_tool:
         self.screen.setColor("LABEL","black","white")
         self.screen.setColor("HELPLINE","white","blue")
         self.screen.setColor("TEXTBOX","black","yellow")
-        self.screen.pushHelpLine("<%s> Powered by Billwang139967...请使用TAB在选项间切换"%__version__)
+        self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换"%__version__)
         self.main_location = 1
         self.sec_location = 1
 
@@ -84,7 +84,7 @@ class Menu_tool:
         self.screen.setColor("LABEL","black","white")
         self.screen.setColor("HELPLINE","white","blue")
         self.screen.setColor("TEXTBOX","black","yellow")
-        self.screen.pushHelpLine("<%s> Powered by Billwang139967...请使用TAB在选项间切换"%__version__)
+        self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换"%__version__)
         li = Listbox(height = 15, width = 18, returnExit = 1, showCursor = 0)
 
         items_n = 1
@@ -120,7 +120,11 @@ class Menu_tool:
             li.append(items[0], items_n)
             items_n += 1
         h = GridForm(self.screen, "请选择", 1, 16)
-        li.setCurrent(self.sec_location)
+        if len(secondary_window["items"]) < self.sec_location:
+            li.setCurrent(1)
+        else:
+            li.setCurrent(self.sec_location)
+
         h.add(li, 0, 1)
         h.add(bb, 0, 9)
         rc = h.run(24,3)
