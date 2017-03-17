@@ -1,6 +1,15 @@
 #!/usr/bin/python
 #coding=utf8
 from snack import *
+
+def conformwindows(screen, text, help = None):
+    #确认窗口
+    bb = ButtonBar(screen, (("确定", "yes"), ("取消", "no")),compact = 1)
+    g = GridForm(screen, text, 20, 16)
+    g.add(Label(text),0,2)
+    g.add(bb,0,3,(10,0,10,0), growx = 1)
+    re = g.runOnce(43, 8)
+    return (bb.buttonPressed(re), re)
  
 class Mask:
     """

@@ -2,13 +2,15 @@
 #encoding=utf-8
 
 import traceback, os, re, time, sys, getopt
+root_path = os.path.split(os.path.realpath(__file__))[0]
+sys.path.insert(0, os.path.join(root_path, 'mylib'))
 from snack import * #导入图形界面
-from mylib.snack_lib import *
-from mylib.BLog import Log
+#from snack_lib import Mask
 from config import config_first
 from config import config_secondary
 import inspect
-__version__ = "1.1.1"
+import three_page
+__version__ = "1.2.0"
 
 def usage():
   print "<使用方法>"
@@ -16,27 +18,16 @@ def usage():
 def warwindows(screen, title, text, help = None):
     #警告窗口
     btn = Button("确定")
-    war = GridForm(screen, title, 1, 15)
+    war = GridForm(screen, title, 20, 16)
     war.add(Label(text),0,1)
     war.add(Label(""),0,2)
     war.add(btn, 0, 3)
-    war.runOnce(35,10)
+    war.runOnce(43,8)
 
-def conformwindows(screen, text, help = None):
-    #确认窗口
-    bb = ButtonBar(screen, (("确定", "yes"), ("取消", "no")),compact = 1)
-    g = GridForm(screen, text, 20, 16)
-    g.add(Label(text),0,2)
-    g.add(bb,0,3,(10,0,10,0), growx = 1)
-    re = g.runOnce(43, 8)
-    return (bb.buttonPressed(re), re)
 
 class Menu_tool:
     def __init__(self):
 
-        debug=False
-        logpath = "/var/log/menu_tool/acc.log"
-        self.logger = Log(logpath,level="debug",is_console=debug, mbs=5, count=5)
         self.screen = SnackScreen()
         self.screen.setColor("ROOT", "white", "blue")
         self.screen.setColor("ENTRY","white","blue")
@@ -68,7 +59,7 @@ class Menu_tool:
         rq = g.runOnce(32,8)
         self.screen.popWindow()
         if rq == "ESC" or bb.buttonPressed(rq) == "否":
-            return self.first_menu()
+            self.first_menu()
         else:
             self.screen.finish()
             return
@@ -76,36 +67,36 @@ class Menu_tool:
     def first_menu(self):
     #主界面
         # 主memu菜单项位置
-        self.screen = SnackScreen()
-        self.screen.finish()
-        self.screen = SnackScreen()
-        self.screen.setColor("ROOT", "white", "blue")
-        self.screen.setColor("ENTRY","white","blue")
-        self.screen.setColor("LABEL","black","white")
-        self.screen.setColor("HELPLINE","white","blue")
-        self.screen.setColor("TEXTBOX","black","yellow")
-        self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换"%__version__)
-        li = Listbox(height = 15, width = 18, returnExit = 1, showCursor = 0)
+        while True:
+            self.screen = SnackScreen()
+            self.screen.finish()
+            self.screen = SnackScreen()
+            self.screen.setColor("ROOT", "white", "blue")
+            self.screen.setColor("ENTRY","white","blue")
+            self.screen.setColor("LABEL","black","white")
+            self.screen.setColor("HELPLINE","white","blue")
+            self.screen.setColor("TEXTBOX","black","yellow")
+            self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换"%__version__)
+            li = Listbox(height = 15, width = 18, returnExit = 1, showCursor = 0)
 
-        items_n = 1
-        for items in config_first["items"]:
-            li.append(items, items_n)
-            items_n += 1
-        li.setCurrent(self.main_location)
-      
-        bb = CompactButton('|->退出<-|')
-        g = GridForm(self.screen, "manager", 1, 10)
-        g.add(li, 0, 1)
-        g.add(bb, 0, 2)
-        g.add(Label(" "),0,3)
-        g.add(Label("[管理利器]"),0,4)
-
-        rc=g.run(1,3)
-        self.main_location = li.current()
-        if rc == 'ESC' or 'snack.CompactButton' in str(rc) :
-            return self.QUIT()
-        if li.current() in range(1,len(config_first["items"])+1):
-            return self.secondary_menu()
+            items_n = 1
+            for items in config_first["items"]:
+                li.append(items, items_n)
+                items_n += 1
+            li.setCurrent(self.main_location)
+          
+            bb = CompactButton('|->退出<-|')
+            g = GridForm(self.screen, "manager", 1, 10)
+            g.add(li, 0, 1)
+            g.add(bb, 0, 2)
+            g.add(Label(" "),0,3)
+            g.add(Label("[管理利器]"),0,4)
+            rc=g.run(1,3)
+            self.main_location = li.current()
+            if rc == 'ESC' or 'snack.CompactButton' in str(rc) :
+                return self.QUIT()
+            if li.current() in range(1,len(config_first["items"])+1):
+                self.secondary_menu()
 
     # 第二层menu
     def secondary_menu(self):
@@ -119,273 +110,29 @@ class Menu_tool:
         for items in secondary_window["items"]:
             li.append(items[0], items_n)
             items_n += 1
-        h = GridForm(self.screen, "请选择", 1, 16)
-        if len(secondary_window["items"]) < self.sec_location:
-            li.setCurrent(1)
-        else:
-            li.setCurrent(self.sec_location)
-
-        h.add(li, 0, 1)
-        h.add(bb, 0, 9)
-        rc = h.run(24,3)
-        if "snack.CompactButton" in str(rc) or rc == 'ESC':
-            return self.first_menu()
-        else :
-            self.sec_location = li.current()
-            if self.sec_location in range(1,len(secondary_window["items"])+1):
-                for fun in inspect.getmembers(self, predicate=inspect.ismethod):
-                    if secondary_window["items"][self.sec_location-1][1] == fun[0]:
-                        return fun[1]()
-                return self.three_example()
-
-    # 三级
-    # 第一个二级窗口的三级页面
-    def three1_1funtion(self):
-         m = Mask(self.screen, "test_windows1_1", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
+        while True:
+            h = GridForm(self.screen, "请选择", 1, 16)
+            if len(secondary_window["items"]) < self.sec_location:
+                li.setCurrent(1)
             else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-    def three1_2funtion(self):
-         m = Mask(self.screen, "test_windows1_2", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 3
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         m.checks_entry( "空格选择下","checks_entry", 1,[ 
-             ('c_entry1','c_entry1','c_entry1')])  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-    def three1_3funtion(self):
-         m = Mask(self.screen, "test_windows1_3", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-    
-    # 第二个二级窗口的三级页面
-    def three2_1funtion(self):
-         m = Mask(self.screen, "test_windows2_1", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-
-    def three2_2funtion(self):
-         m = Mask(self.screen, "test_windows2_2", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-
-    # 第三个二级窗口的三级页面
-    def three3_1funtion(self):
-         m = Mask(self.screen, "test_windows3_1", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-    def three_example(self):
-         m = Mask(self.screen, "test_example", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-            
-
+                li.setCurrent(self.sec_location)
+            h.add(li, 0, 1)
+            h.add(bb, 0, 9)
+            rc = h.run(24,3)
+            if "snack.CompactButton" in str(rc) or rc == 'ESC':
+                return 0
+            else :
+                self.sec_location = li.current()
+                if self.sec_location in range(1,len(secondary_window["items"])+1):
+                    if secondary_window["items"][self.sec_location-1][1] in dir(three_page):
+                        for fun in inspect.getmembers(three_page,callable):
+                        #for fun in inspect.getmembers(self, predicate=inspect.ismethod):
+                            if secondary_window["items"][self.sec_location-1][1] == fun[0]:
+                                fun[1](self.screen)
+                    else:
+                        warwindows(self.screen, "警告", "没有找到对应的函数!")
+                else:
+                    warwindows(self.screen, "测试", "xxx")
 
 try:
     if len(sys.argv) > 1:

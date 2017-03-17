@@ -4,6 +4,10 @@
 * [三级编辑窗口功能实现](#三级编辑窗口功能实现)
 * [二级菜单配置中往三级编辑窗口函数跳转实现](#二级菜单配置中往三级编辑窗口函数跳转实现)
 
+### 说明
+
+界面修改操作仅需要修改 config.py 和 three_page.py 两个文件
+
 ### 一级及二级目录
 
 一级及二级目录显示，只需要修改config.py文件
@@ -42,43 +46,44 @@ config_secondary = [{
 
 ### 三级编辑窗口功能实现
 
-三级编辑窗口,编辑py_menu.py
+三级编辑窗口,编辑three_page.py
 ```
-    def three2_1funtion(self):
-         m = Mask(self.screen, "test_windows2_1", 35 )
-         m.text("label_test0","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.entry( "label_test3", "entry_test3", "127.0.0.1" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-             ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 5
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         (cmd, results) = m.run(43,3)
-         
-         self.logger.debug(str(cmd)+str(results))
-         if cmd == "yes":
-            rx = conformwindows(self.screen, "确认操作")
-            if rx[0] == "yes" or rx[1] == "F12":
-                return self.secondary_menu()
-            else:
-                return self.secondary_menu()
-         else:
-            return self.secondary_menu()
-
+def three1_1funtion(screen):
+     m = Mask(screen, "test_windows1_1", 35 )
+     m.text("label_test0","ceshi_text")
+     m.entry( "label_test1", "entry_test1", "0" )
+     m.entry( "label_test2", "entry_test2", "0" )
+     m.entry( "label_test3", "entry_test3", "127.0.0.1" )
+     m.checks( "复选框","checks_list",[
+         ('checks_name1','checks1',0),
+         ('checks_name2','checks2',0),
+         ('checks_name3','checks3',0),
+         ('checks_name4','checks4',1),
+         ('checks_name5','checks5',0),
+         ('checks_name6','checks6',0),
+         ('checks_name7','checks7',0),
+     ],
+     height= 5
+     )    
+     m.radios( "单选框","radios", [ 
+         ('radios_name1','radios1', 0), 
+         ('radios_name2','radios2', 1), 
+         ('radios_name3','radios3', 0) ] )  
+     
+     m.buttons( yes="Sava&Quit", no="Quit" )
+     (cmd, results) = m.run(43,3)
+     
+     logger.debug(str(cmd)+" "+str(results))
+     if cmd == "yes":
+        rx = conformwindows(screen, "确认操作")
+        if rx[0] == "yes" or rx[1] == "F12":
+            """exe"""
+            return
+        else:
+            logger.debug("cancel this operation")
+            return
+     else:
+        return
 ```
 
 
