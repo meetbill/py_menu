@@ -181,6 +181,23 @@ class Mask:
         
         return [ cmd, results ]
 
+class Snack_output():
+    def __init__(self, screen, title="unnamed mask", width=30):
+        self._screen = screen
+        self.g = GridForm(self._screen, title, 20, width)
+        self._row = 0
+    def text(self, text=""):
+        """
+        Creates  text.
+        """
+        self.g.add(Label(text),0,self._row,anchorLeft = 1)
+        self._row += 1
+    def run(self,width = 0,height = 0):
+        btn = Button("确定")
+        self.g.add(btn,0,self._row)
+        self.g.runOnce(width,height)
+
+
 if __name__ == "__main__":
     import os
     import sys

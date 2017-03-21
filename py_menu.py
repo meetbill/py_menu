@@ -10,7 +10,7 @@ from config import config_first
 from config import config_secondary
 import inspect
 import three_page
-__version__ = "1.2.0"
+__version__ = "1.2.1"
 
 def usage():
   print "<使用方法>"

@@ -13,6 +13,7 @@ root_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.insert(0, os.path.join(root_path, 'mylib'))
 from snack_lib import Mask
 from snack_lib import conformwindows
+from snack_lib import Snack_output
 from BLog import Log
 debug=False
 logpath = "/var/log/menu_tool/acc.log"
@@ -54,7 +55,14 @@ def three1_1funtion(screen):
             return
      else:
         return
-
+def three1_2funtion(screen):
+    m = Snack_output(screen, "test_windows1_2", 35 )
+    m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
+    m.text("xxxfffxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.run(43,3)
 
 if __name__ == "__main__":
     from snack import *
@@ -65,7 +73,7 @@ if __name__ == "__main__":
         screen.setColor("LABEL","black","white")
         screen.setColor("HELPLINE","white","blue")
         screen.setColor("TEXTBOX","black","yellow")
-        three1_1funtion(screen)
+        three1_2funtion(screen)
     except Exception,e:
         print e
     finally:

@@ -1,52 +1,57 @@
 ## usage
 
+
+<!-- vim-markdown-toc GFM -->
+* [说明](#说明)
 * [一级及二级目录](#一级及二级目录)
 * [三级编辑窗口功能实现](#三级编辑窗口功能实现)
+* [三级 output 窗口](#三级-output-窗口)
 * [二级菜单配置中往三级编辑窗口函数跳转实现](#二级菜单配置中往三级编辑窗口函数跳转实现)
 
+<!-- vim-markdown-toc -->
 ### 说明
 
 界面修改操作仅需要修改 config.py 和 three_page.py 两个文件
 
 ### 一级及二级目录
 
-一级及二级目录显示，只需要修改config.py文件
+一级及二级目录显示，只需要修改 config.py 文件
 ```
 config_first = {
         'name': '主目录',
-        'items':  ['a)功能分类1', 
-                   'b)功能分类2',
-                   'c)功能分类3',
+        'items':  ['a) 功能分类 1',
+                   'b) 功能分类 2',
+                   'c) 功能分类 3',
         ],
     }
 
 config_secondary = [{
         'name': 'window1',
-        'items':  [("二级目录1_1","three1_1funtion"),
-                   ("二级目录1_2","three1_2funtion"),
-                   ("二级目录1_3","three1_3funtion"),
+        'items':  [("二级目录 1_1","three1_1funtion"),
+                   ("二级目录 1_2","three1_2funtion"),
+                   ("二级目录 1_3","three1_3funtion"),
         ],
     },
     {
         'name': 'window2',
-        'items':  [("二级目录2_1","three2_1funtion"),
-                   ("二级目录2_2","three2_2funtion"),
+        'items':  [("二级目录 2_1","three2_1funtion"),
+                   ("二级目录 2_2","three2_2funtion"),
         ],
     },
     {
         'name': 'window3',
-        'items':  [("二级目录3_1","three3_1funtion"),
+        'items':  [("二级目录 3_1","three3_1funtion"),
         ],
     },
 ]
 ```
-> * 一级目录中的items[列表]即使终端菜单界面上的列表显示
-> * 二级目录中的items[列表]即使终端菜单界面上的列表显示，items列表中的元素是元组，元组的第一个元素是二级菜单的列表项，第二个元素是指定三级的功能
-> * config_first中items的元素个数必须和config_secondary列表的元素个数一致，即保证一级目录都有对应的二级目录窗口
+> * 一级目录中的 items『列表』即使终端菜单界面上的列表显示
+> * 二级目录中的 items『列表』即使终端菜单界面上的列表显示，items 列表中的元素是元组，元组的第一个元素是二级菜单的列表项，第二个元素是指定三级的功能
+> * config_first 中 items 的元素个数必须和 config_secondary 列表的元素个数一致，即保证一级目录都有对应的二级目录窗口
 
 ### 三级编辑窗口功能实现
 
-三级编辑窗口,编辑three_page.py
+三级编辑窗口，编辑 three_page.py
 ```
 def three1_1funtion(screen):
      m = Mask(screen, "test_windows1_1", 35 )
@@ -64,15 +69,15 @@ def three1_1funtion(screen):
          ('checks_name7','checks7',0),
      ],
      height= 5
-     )    
-     m.radios( "单选框","radios", [ 
-         ('radios_name1','radios1', 0), 
-         ('radios_name2','radios2', 1), 
-         ('radios_name3','radios3', 0) ] )  
-     
+     )
+     m.radios( "单选框","radios", [
+         ('radios_name1','radios1', 0),
+         ('radios_name2','radios2', 1),
+         ('radios_name3','radios3', 0) ] )
+
      m.buttons( yes="Sava&Quit", no="Quit" )
      (cmd, results) = m.run(43,3)
-     
+
      logger.debug(str(cmd)+" "+str(results))
      if cmd == "yes":
         rx = conformwindows(screen, "确认操作")
@@ -85,10 +90,23 @@ def three1_1funtion(screen):
      else:
         return
 ```
+### 三级 output 窗口
+
+三级 output 窗口，编辑 three_page.py
+```
+def three1_2funtion(screen):
+    m = Snack_output(screen, "test_windows1_2", 35 )
+    m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
+    m.text("xxxfffxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.run(43,3)
+```
 
 
 ### 二级菜单配置中往三级编辑窗口函数跳转实现
 
 二级菜单中，二级菜单配置是一个列表，列表中的元素是元组，第一个参数是二级菜单中的显示内容，第二个参数是跳转到的三级函数名字
 
-'items':  [("二级目录3_1","three3_1funtion")],
+'items':  [("二级目录 3_1","three3_1funtion")],
