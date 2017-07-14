@@ -1,7 +1,7 @@
 #!/usr/bin/python
 #encoding=utf-8
 
-import traceback, os, re, time, sys, getopt
+import traceback, os, sys, getopt
 root_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.insert(0, os.path.join(root_path, 'mylib'))
 from snack import * #导入图形界面
@@ -100,10 +100,8 @@ class Menu_tool:
 
     # 第二层menu
     def secondary_menu(self):
-        re = []
         li = Listbox(height = 15, width = 14, returnExit = 1, showCursor = 0)
         n = 0
-        n1 = 1
         bb = CompactButton('返回')
         secondary_window = config_secondary[self.main_location - 1]
         items_n = 1
@@ -144,6 +142,9 @@ try:
     
     if len(config_first["items"]) != len(config_secondary):
         print "一级目录个数与二级窗口个数不对应"
+        sys.exit()
+    if  os.getenv('STY'):
+        print "not support screen"
         sys.exit()
     menu = Menu_tool()
     menu.main()
