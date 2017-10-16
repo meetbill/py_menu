@@ -2,44 +2,28 @@
 
 更简单操作和使用的终端菜单及管理
 
-(以下链接由 [Vim_IDE](https://github.com/BillWang139967/Vim)自动生成)
-
-* [项目概述及展示](#项目概述及展示)
-* [usage](#usage)
-* [输出结果](#输出结果)
-* [相关项目](#相关项目)
-* [version](#version)
-* [参加步骤](#参加步骤)
-* [小额捐款](#小额捐款)
-
-## 项目概述及展示
-
-> * [项目](docs/project.md)
-
 ![Screenshot](images/test.jpg)
 
-## usage
+## 使用手册
 
-> * [py_menu使用手册](docs/usage.md)
-> * snack_lib.py使用手册,可单独使用---------[snack_lib](docs/snack_lib.md)
-> * [程序原理及结构](docs/arch.md)
+> * [py_menu 使用手册](docs/usage.md)
 
 ## 输出结果
 
-三层目录点击确定后返回以下结果，是个json
+三层菜单点击确定后返回以下结果，是个 json
 
-日志记录在/var/log/menu_tool/acc.log
+日志记录在 /var/log/menu_tool/acc.log
 ```
 yes {'entry_test2': '0', 'entry_test3': '127.0.0.1', 'entry_test1': '0', 'radios': 'radios2', 'checks_list': ['checks4']}
 ```
-点击cancel时，输出no
+点击 cancel 时，输出 no
 
 ## 相关项目
 
-shell终端菜单--[shell_menu](https://github.com/BillWang139967/shell_menu.git)
+shell 终端菜单 --[shell_menu](https://github.com/BillWang139967/shell_menu.git)
 
 ## version
-----
+
 * v1.2.1，2017-03-21 添加三级输出界面
 * v1.2.0，2017-03-17 将三级配置界面独立出来为 three_page.py，可以单独调试此页面
 * v1.1.1，2016-12-19 修复 bug，程序会保留二级菜单选项位置，假如从一级目录重新进入时，二级菜单选择位置没有报异常 bug
@@ -73,6 +57,6 @@ $ git push -f origin master
 ```
 ## 小额捐款
 
-如果你觉得py_menu对你有帮助, 可以对作者进行小额捐款(支付宝)
+如果你觉得 py_menu 对你有帮助，可以对作者进行小额捐款（支付宝）
 
 ![Screenshot](images/5.jpg)
