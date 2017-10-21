@@ -10,7 +10,6 @@ def conformwindows(screen, text, help = None):
     g.add(bb,0,3,(10,0,10,0), growx = 1)
     re = g.runOnce(43, 8)
     return (bb.buttonPressed(re), re)
- 
 class Mask:
     """
     An input mask.
@@ -180,7 +179,6 @@ class Mask:
                 results[name] = self._elements[name].current()
         
         return [ cmd, results ]
-
 class Snack_output():
     def __init__(self, screen, title="unnamed mask", width=30):
         self._screen = screen
@@ -197,54 +195,91 @@ class Snack_output():
         self.g.add(btn,0,self._row)
         self.g.runOnce(width,height)
 
+## test
+def test_Mask(screen,logger):
+     m = Mask( screen, "test_windows", 35 )
+     m.text("label_test1","ceshi_text")
+     m.entry( "label_test1", "entry_test1", "0" )
+     m.entry( "label_test2", "entry_test2", "0" )
+     m.checks( "复选框","checks_list",[
+         ('checks_name1','checks1',0),
+         ('checks_name2','checks2',0),
+        ('checks_name3','checks3',0),
+         ('checks_name4','checks4',1),
+         ('checks_name5','checks5',0),
+         ('checks_name6','checks6',0),
+         ('checks_name7','checks7',0),
+     ],
+     height= 3
+     )    
+     m.radios( "单选框","radios", [ 
+         ('radios_name1','radios1', 0), 
+         ('radios_name2','radios2', 1), 
+         ('radios_name3','radios3', 0) ] )  
+     m.checks_entry( "空格选择下","checks_entry", 1,[ 
+         ('c_entry1','c_entry1','c_entry1')])  
+     
+     m.buttons( yes="Sava&Quit", no="Quit" )
+     #(cmd, results) = m.run(12,3)
+     (cmd, results) = m.run()
+     logger.debug(str(cmd)+" "+str(results))
+     if cmd == "yes":
+        rx = conformwindows(screen, "确认操作")
+        if rx[0] == "yes" or rx[1] == "F12":
+            """exe"""
+            return
+        else:
+            logger.debug("cancel this operation")
+            return
+     else:
+        return
+     #return cmd,results
+def test_Snack_output(screen):
+    m = Snack_output(screen, "test_windows1_2", 35 )
+    m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
+    m.text("xxxfffxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.text("xxxxxxxxxxxxxxxxx")
+    m.run(43,3)
+
 
 if __name__ == "__main__":
     import os
     import sys
     root_path = os.path.dirname(__file__)
     sys.path.insert(0, os.path.join(root_path, '..'))
+    
+    from BLog import Log
+    debug=False
+    logpath = "/tmp/test_snack_lib.log"
+    logger = Log(logpath,level="debug",is_console=debug, mbs=5, count=5)
+    ###################################snack
     from mylib.snack_lib import *
-
     screen = SnackScreen()
     screen.setColor("ROOT", "white", "blue")
     screen.setColor("ENTRY","white","blue")
     screen.setColor("LABEL","black","white")
     screen.setColor("HELPLINE","white","blue")
     screen.setColor("TEXTBOX","black","yellow")
-    def test():
-         m = Mask( screen, "test_windows", 35 )
-         m.text("label_test1","ceshi_text")
-         m.entry( "label_test1", "entry_test1", "0" )
-         m.entry( "label_test2", "entry_test2", "0" )
-         m.checks( "复选框","checks_list",[
-             ('checks_name1','checks1',0),
-             ('checks_name2','checks2',0),
-            ('checks_name3','checks3',0),
-             ('checks_name4','checks4',1),
-             ('checks_name5','checks5',0),
-             ('checks_name6','checks6',0),
-             ('checks_name7','checks7',0),
-         ],
-         height= 3
-         )    
-         m.radios( "单选框","radios", [ 
-             ('radios_name1','radios1', 0), 
-             ('radios_name2','radios2', 1), 
-             ('radios_name3','radios3', 0) ] )  
-         m.checks_entry( "空格选择下","checks_entry", 1,[ 
-             ('c_entry1','c_entry1','c_entry1')])  
-         
-         m.buttons( yes="Sava&Quit", no="Quit" )
-         #(cmd, results) = m.run(12,3)
-         (cmd, results) = m.run()
-         screen.finish() 
-         return cmd,results
-
+    ###################################snack_end
     try:
-        (cmd,results) = test()
-        print cmd,results
+        logger.debug("test_start===================================================")
+        #ListboxChoiceWindow()
+        action, selection = ListboxChoiceWindow(screen, 'Title 2',                                                                                                       
+                                   'Choose one item from the list below:',
+                                   ('exit page','entry_page'), default=0,
+                                   help="Help for a listbox")
+        logger.debug(action)
+        logger.debug(selection)
+        if action in (None,"ok"):
+            if selection == 0:
+                test_Mask(screen,logger)
+            else:
+                test_Snack_output(screen)
+        logger.debug("test_ok======================================================")
     except Exception ,e:
-        print e
+        logger.debug(e)
     finally:
         screen.finish()
 
