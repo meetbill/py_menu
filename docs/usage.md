@@ -1,6 +1,7 @@
 ## py_menu 使用手册
 
 <!-- vim-markdown-toc GFM -->
+
 * [1 项目简介](#1-项目简介)
     * [1.1 已测试环境](#11-已测试环境)
 * [2 使用篇](#2-使用篇)
@@ -28,7 +29,7 @@
 本项目主要更新两部分
 
 > * py_menu 整体框架
-> * 第三级编辑页的底层函数库 [mylib/snack_lib.py](./snack_lib.md) ,此库可以单独使用
+> * 第三级编辑页的底层函数库 [w_lib/pysnack/snack_lib.py](./snack_lib.md) ,此库可以单独使用
 
 ### 1.1 已测试环境
 

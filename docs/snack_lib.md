@@ -1,6 +1,7 @@
 ## snack_lib
 
 <!-- vim-markdown-toc GFM -->
+
 * [1 使用](#1-使用)
 * [2 功能](#2-功能)
     * [2.1 编辑窗口](#21-编辑窗口)
@@ -13,7 +14,7 @@
 snack_lib 可以独立使用
 
 ```
-#cd py_menu/mylib/
+#cd py_menu/w_lib/pysnack
 #python snack_lib.py
 ```
 
