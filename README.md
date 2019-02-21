@@ -2,13 +2,19 @@
 
 <!-- vim-markdown-toc GFM -->
 
-* [1 使用 py_menu](#1-使用-py_menu)
-    * [1.1 使用场景](#11-使用场景)
-    * [1.2 开始使用](#12-开始使用)
-* [2 相关项目](#2-相关项目)
-* [3 Version](#3-version)
-* [4 参加步骤](#4-参加步骤)
-* [5 小额捐款](#5-小额捐款)
+* [1 背景和目标](#1-背景和目标)
+    * [1.1 背景](#11-背景)
+    * [1.2 目标](#12-目标)
+* [2 名词解释](#2-名词解释)
+* [3 假设和依赖](#3-假设和依赖)
+    * [3.1 依赖](#31-依赖)
+* [4 使用](#4-使用)
+* [5 相关项目](#5-相关项目)
+    * [5.1 类似项目](#51-类似项目)
+    * [5.2 使用了 py_menu 的项目](#52-使用了-py_menu-的项目)
+* [6 Version](#6-version)
+* [7 参加步骤](#7-参加步骤)
+* [8 小额捐款](#8-小额捐款)
 
 <!-- vim-markdown-toc -->
 
@@ -16,16 +22,31 @@
 
 ![Screenshot](images/test.jpg)
 
-## 1 使用 py_menu
+## 1 背景和目标
 
-### 1.1 使用场景
+### 1.1 背景
 
-> * 管理某个平台服务时，对特定平台的服务进行管理操作
-> * 常用操作执行
+> * 平台可能会管理成千上万个实例，但什么来管理平台尼，需要有个程序来对特定平台的服务进行管理操作
+> * 管理常用操作程序
 
-### 1.2 开始使用
+### 1.2 目标
 
-> * [snack 前世今生](https://github.com/meetbill/py_menu/wiki)
+> * 框架与逻辑代码分离，备份代码时只需要备份主要逻辑代码即可
+
+## 2 名词解释
+
+> * newt: 全称是：Not Erik’s Windowing Toolkit, 用在 RatHat 的 Linux 发行版本 (RHEL, Fedora 和 CentOS) 的安装程序项目 Anaconda 中
+> * snack: 官方 newt 库中还提供了 Python 封装库，名称为 snack
+>   * [snack 前世今生](https://github.com/meetbill/py_menu/wiki)
+
+## 3 假设和依赖
+
+### 3.1 依赖
+
+系统依赖: Centos 6.X 及以上 
+
+## 4 使用
+
 > * [py_menu 使用手册](docs/usage.md)
 
 
@@ -37,11 +58,15 @@ yes {'entry_test2': '0', 'entry_test3': '127.0.0.1', 'entry_test1': '0', 'radios
 ```
 点击 cancel 时，输出 no
 
-## 2 相关项目
+## 5 相关项目
 
-shell 终端菜单 --[shell_menu](https://github.com/meetbill/shell_menu.git)
+### 5.1 类似项目
+> * shell 终端菜单 --[shell_menu](https://github.com/meetbill/shell_menu.git)
 
-## 3 Version
+### 5.2 使用了 py_menu 的项目
+> * MegaCli 终端界面管理工具 [Megatui](https://github.com/meetbill/MegaTUI)
+
+## 6 Version
 
 * V1.2.2，2019-02-18 (1) 更改日志方式；(2) 添加 Centos6.x `_snackmodule.so`
 * V1.2.1，2017-03-21 添加三级输出界面
@@ -51,7 +76,7 @@ shell 终端菜单 --[shell_menu](https://github.com/meetbill/shell_menu.git)
 * V1.0.2，2016-09-29 添加日志，输出到 /var/log/menu_tool/acc.log 中
 * V1.0.1，2016-09-25 First edit
 
-## 4 参加步骤
+## 7 参加步骤
 
 * 在 GitHub 上 `fork` 到自己的仓库，然后 `clone` 到本地，并设置用户信息。
 ```
@@ -75,7 +100,7 @@ $ git checkout master
 $ git rebase upstream/master
 $ git push -f origin master
 ```
-## 5 小额捐款
+## 8 小额捐款
 
 如果你觉得 py_menu 对你有帮助，可以对作者进行小额捐款（支付宝）
 
