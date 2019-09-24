@@ -21,6 +21,8 @@
         * [3.3.1 一级及二级菜单](#331-一级及二级菜单)
         * [3.3.2 三级编辑窗口](#332-三级编辑窗口)
         * [3.3.3 二级菜单配置中往三级编辑窗口函数跳转实现](#333-二级菜单配置中往三级编辑窗口函数跳转实现)
+* [4 常见问题](#4-常见问题)
+    * [4.1 中文乱码](#41-中文乱码)
 
 <!-- vim-markdown-toc -->
 
@@ -29,7 +31,7 @@
 本项目主要更新两部分
 
 > * py_menu 整体框架
-> * 第三级编辑页的底层函数库 [w_lib/pysnack/snack_lib.py](./snack_lib.md) ,此库可以单独使用
+> * 第三级编辑页的底层函数库 [w_lib/pysnack/snack_lib.py](./snack_lib.md) , 此库可以单独使用
 
 ### 1.1 已测试环境
 
@@ -90,9 +92,9 @@ config_secondary = [{
 
 常用三级窗口如下
 > * [snack_lib](./snack_lib.md)
->   * 编辑窗口(Mask 类)
->   * 提醒窗口及输出窗口(Snack_output 类)
->   * 确认窗口(conformwindows 方法)
+>   * 编辑窗口 (Mask 类）
+>   * 提醒窗口及输出窗口 (Snack_output 类）
+>   * 确认窗口 (conformwindows 方法）
 > * snack 库
 >   * 选择窗口 ListboxChoiceWindow
 
@@ -237,3 +239,39 @@ logger.debug(str(messages))
 二级菜单中，二级菜单配置是一个列表，列表中的元素是元组，第一个参数是二级菜单中的显示内容，第二个参数是跳转到的三级函数名字
 
 'items':  [("二级目录 3_1","three3_1funtion")],
+
+## 4 常见问题
+
+### 4.1 中文乱码
+
+那么如何显示中文呢？
+
+> 系统必须安装中文语言包才行
+```
+# yum -y groupinstall chinese-support
+```
+
+> 设置相应的字符集
+```
+## 临时生效
+# export LANG="zh_CN.UTF-8"    # 设置为中文
+# export LANG="en_US.UTF-8"    # 设置为英文，我比较喜欢这样 export LANG=C
+
+## 永久生效， 编辑 /etc/sysconfig/i18n
+LANG="zh_CN.UTF-8"
+
+## 或者，编辑 /etc/profile 配置文件，添加如下一行
+export LANG="zh_CN.UTF-8"
+# 重新载入
+# . /etc/profile
+
+## 查看当前的字符集
+# echo $LANG
+```
+
+好了，经过上面的设置，在终端上应该能够显示中文了。
+
+> ssh 远程终端乱码
+```
+如果 SSH 终端还是乱码，那么我们也需要对终端软件的编码进行设置。
+```
