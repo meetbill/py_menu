@@ -7,7 +7,7 @@ import sys
 import getopt
 root_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.insert(0, os.path.join(root_path, 'w_lib'))
-from pysnack.snack import *  # 导入图形界面
+from pysnack.snack import *
 from config import config_first
 from config import config_secondary
 import inspect
@@ -15,7 +15,7 @@ import three_page
 import blog
 
 blog.init_log("./log/pymenu")
-__version__ = "1.2.2"
+__version__ = "1.2.3"
 
 
 def usage():
@@ -86,9 +86,7 @@ class Menu_tool:
             self.screen.setColor("LABEL", "black", "white")
             self.screen.setColor("HELPLINE", "white", "blue")
             self.screen.setColor("TEXTBOX", "black", "yellow")
-            self.screen.pushHelpLine(
-                "<%s> Powered by meetbill...请使用TAB在选项间切换" %
-                __version__)
+            self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换" % __version__)
             li = Listbox(height=15, width=18, returnExit=1, showCursor=0)
 
             items_n = 1
@@ -113,7 +111,6 @@ class Menu_tool:
     # 第二层menu
     def secondary_menu(self):
         li = Listbox(height=15, width=14, returnExit=1, showCursor=0)
-        n = 0
         bb = CompactButton('返回')
         secondary_window = config_secondary[self.main_location - 1]
         items_n = 1
@@ -133,16 +130,12 @@ class Menu_tool:
                 return 0
             else:
                 self.sec_location = li.current()
-                if self.sec_location in range(1, len(
-                        secondary_window["items"]) + 1):
-                    if secondary_window["items"][self.sec_location -
-                                                 1][1] in dir(three_page):
+                if self.sec_location in range(1, len(secondary_window["items"]) + 1):
+                    name, func_name, func_kargs = secondary_window["items"][self.sec_location - 1]
+                    if func_name in dir(three_page):
                         for fun in inspect.getmembers(three_page, callable):
-                            # for fun in inspect.getmembers(self,
-                            # predicate=inspect.ismethod):
-                            if secondary_window["items"][self.sec_location -
-                                                         1][1] == fun[0]:
-                                fun[1](self.screen)
+                            if func_name == fun[0]:
+                                fun[1](self.screen, **func_kargs)
                     else:
                         warwindows(self.screen, "警告", "没有找到对应的函数!")
                 else:
