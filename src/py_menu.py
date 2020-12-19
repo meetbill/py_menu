@@ -5,17 +5,19 @@ import traceback
 import os
 import sys
 import getopt
+import inspect
+
 root_path = os.path.split(os.path.realpath(__file__))[0]
 sys.path.insert(0, os.path.join(root_path, 'w_lib'))
 from pysnack.snack import *
-from config import config_first
-from config import config_secondary
-import inspect
+from pysnack import snack_lib
+
+import config
 import three_page
 import blog
 
 blog.init_log("./log/pymenu")
-__version__ = "1.2.3"
+_version_ = "1.2.4"
 
 
 def usage():
@@ -23,17 +25,7 @@ def usage():
     print "-h 本帮助"
 
 
-def warwindows(screen, title, text, help=None):
-    # 警告窗口
-    btn = Button("确定")
-    war = GridForm(screen, title, 20, 16)
-    war.add(Label(text), 0, 1)
-    war.add(Label(""), 0, 2)
-    war.add(btn, 0, 3)
-    war.runOnce(43, 8)
-
-
-class Menu_tool:
+class MenuTool(object):
     def __init__(self):
 
         self.screen = SnackScreen()
@@ -42,9 +34,6 @@ class Menu_tool:
         self.screen.setColor("LABEL", "black", "white")
         self.screen.setColor("HELPLINE", "white", "blue")
         self.screen.setColor("TEXTBOX", "black", "yellow")
-        self.screen.pushHelpLine(
-            "<%s> Powered by meetbill...请使用TAB在选项间切换" %
-            __version__)
         self.main_location = 1
         self.sec_location = 1
 
@@ -60,7 +49,7 @@ class Menu_tool:
             print "感谢使用！"
             return ''
 
-    def QUIT(self):
+    def quit(self):
         # 调用退出到命令行，输入exit返回
         buttons = ("是", "否")
         bb = ButtonBar(self.screen, buttons)
@@ -86,11 +75,11 @@ class Menu_tool:
             self.screen.setColor("LABEL", "black", "white")
             self.screen.setColor("HELPLINE", "white", "blue")
             self.screen.setColor("TEXTBOX", "black", "yellow")
-            self.screen.pushHelpLine("<%s> Powered by meetbill...请使用TAB在选项间切换" % __version__)
+            self.screen.pushHelpLine("<%s> Powered by meetbill...请使用 TAB 在选项间切换" % _version_)
             li = Listbox(height=15, width=18, returnExit=1, showCursor=0)
 
             items_n = 1
-            for items in config_first["items"]:
+            for items in config.config_first["items"]:
                 li.append(items, items_n)
                 items_n += 1
             li.setCurrent(self.main_location)
@@ -104,15 +93,15 @@ class Menu_tool:
             rc = g.run(1, 3)
             self.main_location = li.current()
             if rc == 'ESC' or 'snack.CompactButton' in str(rc):
-                return self.QUIT()
-            if li.current() in range(1, len(config_first["items"]) + 1):
+                return self.quit()
+            if li.current() in range(1, len(config.config_first["items"]) + 1):
                 self.secondary_menu()
 
     # 第二层menu
     def secondary_menu(self):
         li = Listbox(height=15, width=14, returnExit=1, showCursor=0)
         bb = CompactButton('返回')
-        secondary_window = config_secondary[self.main_location - 1]
+        secondary_window = config.config_secondary[self.main_location - 1]
         items_n = 1
         for items in secondary_window["items"]:
             li.append(items[0], items_n)
@@ -126,6 +115,7 @@ class Menu_tool:
             h.add(li, 0, 1)
             h.add(bb, 0, 9)
             rc = h.run(24, 3)
+
             if "snack.CompactButton" in str(rc) or rc == 'ESC':
                 return 0
             else:
@@ -137,9 +127,9 @@ class Menu_tool:
                             if func_name == fun[0]:
                                 fun[1](self.screen, **func_kargs)
                     else:
-                        warwindows(self.screen, "警告", "没有找到对应的函数!")
+                        snack_lib.warwindows(self.screen, "警告", "没有找到对应的函数!")
                 else:
-                    warwindows(self.screen, "测试", "xxx")
+                    snack_lib.warwindows(self.screen, "测试", "xxx")
 
 
 try:
@@ -150,13 +140,14 @@ try:
                 usage()
                 sys.exit()
 
-    if len(config_first["items"]) != len(config_secondary):
+    if len(config.config_first["items"]) != len(config.config_secondary):
         print "一级目录个数与二级窗口个数不对应"
         sys.exit()
     if os.getenv('STY'):
         print "not support screen"
         sys.exit()
-    menu = Menu_tool()
+
+    menu = MenuTool()
     menu.main()
 except Exception as e:
     print e

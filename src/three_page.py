@@ -8,19 +8,13 @@
 # Description:
 
 """
-import os
-import sys
-root_path = os.path.split(os.path.realpath(__file__))[0]
-sys.path.insert(0, os.path.join(root_path, 'w_lib'))
-from pysnack.snack_lib import Mask
-from pysnack.snack_lib import conformwindows
-from pysnack.snack_lib import Snack_output
+from w_lib.pysnack import snack_lib
 import logging
 
 
 def three1_1funtion(screen, *args, **kargs):
     window_name = "name" in kargs.keys() and kargs["name"] or "test_windows1_1"
-    m = Mask(screen, window_name, 35)
+    m = snack_lib.Mask(screen, window_name, 35)
     m.text("label_test0", "ceshi_text")
     m.entry("label_test1", "entry_test1", "0")
     m.entry("label_test2", "entry_test2", "0")
@@ -46,7 +40,7 @@ def three1_1funtion(screen, *args, **kargs):
 
     logging.info(str(cmd) + " " + str(results))
     if cmd == "yes":
-        rx = conformwindows(screen, "确认操作")
+        rx = snack_lib.conformwindows(screen, "确认操作")
         if rx[0] == "yes" or rx[1] == "F12":
             """exe"""
             return
@@ -58,7 +52,7 @@ def three1_1funtion(screen, *args, **kargs):
 
 
 def three1_2funtion(screen, *args, **kargs):
-    m = Snack_output(screen, "test_windows1_2", 35)
+    m = snack_lib.SnackOutput(screen, "test_windows1_2", 35)
     m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
     m.text("xxxfffxxxxxxxxxxxxxx")
     m.text("xxxxxxxxxxxxxxxxx")

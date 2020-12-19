@@ -3,8 +3,22 @@
 from snack import *
 
 
+def warwindows(screen, title, text, help=None):
+    """
+    # 警告窗口
+    """
+    btn = Button("确定")
+    war = GridForm(screen, title, 20, 16)
+    war.add(Label(text), 0, 1)
+    war.add(Label(""), 0, 2)
+    war.add(btn, 0, 3)
+    war.runOnce(43, 8)
+    return 0
+
 def conformwindows(screen, text, help=None):
+    """
     # 确认窗口
+    """
     bb = ButtonBar(screen, (("确定", "yes"), ("取消", "no")), compact=1)
     g = GridForm(screen, text, 20, 16)
     g.add(Label(text), 0, 2)
@@ -13,7 +27,7 @@ def conformwindows(screen, text, help=None):
     return (bb.buttonPressed(re), re)
 
 
-class Mask:
+class Mask(object):
     """
     An input mask.
     """
@@ -211,7 +225,7 @@ class Mask:
         return [cmd, results]
 
 
-class Snack_output():
+class SnackOutput(object):
     def __init__(self, screen, title="unnamed mask", width=30):
         self._screen = screen
         self.g = GridForm(self._screen, title, 20, width)
@@ -272,7 +286,7 @@ def test_Mask(screen, logger):
     # return cmd,results
 
 
-def test_Snack_output(screen):
+def test_snack_output(screen):
     m = Snack_output(screen, "test_windows1_2", 35)
     m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
     m.text("xxxfffxxxxxxxxxxxxxx")
@@ -292,6 +306,7 @@ if __name__ == "__main__":
     debug = False
     logpath = "/tmp/test_snack_lib.log"
     logger = Log(logpath, level="debug", is_console=debug, mbs=5, count=5)
+
     # snack
     from snack_lib import *
     screen = SnackScreen()
@@ -302,8 +317,7 @@ if __name__ == "__main__":
     screen.setColor("TEXTBOX", "black", "yellow")
     # snack_end
     try:
-        logger.debug(
-            "test_start===================================================")
+        logger.debug("test_start===================================================")
         # ListboxChoiceWindow()
         action, selection = ListboxChoiceWindow(screen, 'Title 2',
                                                 'Choose one item from the list below:',
@@ -315,9 +329,8 @@ if __name__ == "__main__":
             if selection == 0:
                 test_Mask(screen, logger)
             else:
-                test_Snack_output(screen)
-        logger.debug(
-            "test_ok======================================================")
+                test_snack_output(screen)
+        logger.debug("test_ok======================================================")
     except Exception as e:
         logger.debug(e)
     finally:

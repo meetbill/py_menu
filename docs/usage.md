@@ -5,7 +5,7 @@
 * [1 项目简介](#1-项目简介)
     * [1.1 已测试环境](#11-已测试环境)
 * [2 使用篇](#2-使用篇)
-    * [2.1 简介](#21-简介)
+    * [2.1 启动](#21-启动)
     * [2.2 一级及二级菜单](#22-一级及二级菜单)
     * [2.3 三级菜单](#23-三级菜单)
         * [2.3.1 概述](#231-概述)
@@ -39,10 +39,11 @@
 > * suse 12
 
 ## 2 使用篇
-### 2.1 简介
+### 2.1 启动
 
-先执行 `python py_menu.py` 看能否输出界面，suse 系统时可能会缺少库，可以通过以下方法解决
+先执行 `python py_menu.py` 看能否输出界面, 可正常输出时，则可正常使用
 
+> suse 系统可能会缺少库，可以通过以下方法解决:
 ```
 #cd tools
 #bash install_lib.sh
@@ -64,20 +65,20 @@ config_first = {
 
 config_secondary = [{
         'name': 'window1',
-        'items':  [("二级目录 1_1","three1_1funtion"),
-                   ("二级目录 1_2","three1_2funtion"),
-                   ("二级目录 1_3","three1_3funtion"),
+        'items':  [("二级目录 1_1","three1_1funtion", {}),
+                   ("二级目录 1_2","three1_2funtion", {}),
+                   ("二级目录 1_3","three1_3funtion", {}),
         ],
     },
     {
         'name': 'window2',
-        'items':  [("二级目录 2_1","three2_1funtion"),
-                   ("二级目录 2_2","three2_2funtion"),
+        'items':  [("二级目录 2_1","three2_1funtion", {}),
+                   ("二级目录 2_2","three2_2funtion", {}),
         ],
     },
     {
         'name': 'window3',
-        'items':  [("二级目录 3_1","three3_1funtion"),
+        'items':  [("二级目录 3_1","three3_1funtion", {}),
         ],
     },
 ]
@@ -102,7 +103,7 @@ config_secondary = [{
 
 三级编辑窗口，编辑 three_page.py
 ```
-def three1_1funtion(screen):
+def three1_1funtion(screen, *args, **kargs):
      m = Mask(screen, "test_windows1_1", 35 )
      m.text("label_test0","ceshi_text")
      m.entry( "label_test1", "entry_test1", "0" )
@@ -143,7 +144,7 @@ def three1_1funtion(screen):
 
 三级 output 窗口，编辑 three_page.py
 ```
-def three1_2funtion(screen):
+def three1_2funtion(screen, *args, **kargs):
     m = Snack_output(screen, "test_windows1_2", 35 )
     m.text("ceshijjjjjjjjjjjxdffffffffffffffff")
     m.text("xxxfffxxxxxxxxxxxxxx")
