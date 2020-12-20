@@ -8,8 +8,9 @@
 # Description:
 
 """
-from w_lib.pysnack import snack_lib
 import logging
+
+from w_lib.pysnack import snack_lib
 
 
 def three1_1funtion(screen, *args, **kargs):

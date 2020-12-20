@@ -7,15 +7,14 @@ import sys
 import getopt
 import inspect
 
-root_path = os.path.split(os.path.realpath(__file__))[0]
-sys.path.insert(0, os.path.join(root_path, 'w_lib'))
-from pysnack.snack import *
-from pysnack import snack_lib
-
+from w_lib.pysnack.snack import *
+from w_lib.pysnack import snack_lib
+from w_lib import blog
 import config
 import three_page
-import blog
 
+reload(sys)
+sys.setdefaultencoding('utf8')
 blog.init_log("./log/pymenu")
 _version_ = "1.2.4"
 
