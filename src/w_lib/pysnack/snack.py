@@ -207,15 +207,8 @@ class Listbox(Widget):
         self.item2key = {}
         self.w.listboxClear()
 
-    def __init__(self, height, scroll=0, returnExit=0,
-                 width=0, showCursor=0, multiple=0, border=0):
-        self.w = _snack.listbox(
-            height,
-            scroll,
-            returnExit,
-            showCursor,
-            multiple,
-            border)
+    def __init__(self, height, scroll=0, returnExit=0, width=0, showCursor=0, multiple=0, border=0):
+        self.w = _snack.listbox(height, scroll, returnExit, showCursor, multiple, border)
         self.key2item = {}
         self.item2key = {}
         if (width):
@@ -315,13 +308,7 @@ class Entry(Widget):
 
     def __init__(self, width, text="", hidden=0, password=0, scroll=1,
                  returnExit=0):
-        self.w = _snack.entry(
-            width,
-            text,
-            hidden,
-            password,
-            scroll,
-            returnExit)
+        self.w = _snack.entry(width, text, hidden, password, scroll, returnExit)
 
 
 # Form uses hotkeys
@@ -329,10 +316,17 @@ hotkeys = {"F1": _snack.KEY_F1, "F2": _snack.KEY_F2, "F3": _snack.KEY_F3,
            "F4": _snack.KEY_F4, "F5": _snack.KEY_F5, "F6": _snack.KEY_F6,
            "F7": _snack.KEY_F7, "F8": _snack.KEY_F8, "F9": _snack.KEY_F9,
            "F10": _snack.KEY_F10, "F11": _snack.KEY_F11,
-           "F12": _snack.KEY_F12, "ESC": _snack.KEY_ESC, " ": ord(" ")}
+           "F12": _snack.KEY_F12, "ESC": _snack.KEY_ESC,
+           "ENTER": _snack.KEY_ENTER, "SUSPEND": _snack.KEY_SUSPEND,
+           "BACKSPACE": _snack.KEY_BACKSPACE, "DELETE": _snack.KEY_DELETE,
+           "INSERT": _snack.KEY_INSERT,
+           " ": ord(" ")}
 
 for n in hotkeys.keys():
     hotkeys[hotkeys[n]] = n
+for o, c in [(ord(c), c) for c in string.ascii_letters + string.digits]:
+    hotkeys[c] = o
+    hotkeys[o] = c
 
 
 class Form:
@@ -786,10 +780,8 @@ class CheckboxTree(Widget):
         curr = self.w.checkboxtreeGetCurrent()
         return self.key2item[curr]
 
-    def __init__(self, height, scroll=0, width=None,
-                 hide_checkbox=0, unselectable=0):
-        self.w = _snack.checkboxtree(
-            height, scroll, hide_checkbox, unselectable)
+    def __init__(self, height, scroll=0, width=None, hide_checkbox=0, unselectable=0):
+        self.w = _snack.checkboxtree(height, scroll, hide_checkbox, unselectable)
         self.key2item = {}
         self.item2key = {}
         if (width):

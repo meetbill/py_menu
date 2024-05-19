@@ -36,8 +36,9 @@
 ## 2 名词解释
 
 > * newt: 全称是：Not Erik’s Windowing Toolkit, 用在 RatHat 的 Linux 发行版本 (RHEL, Fedora 和 CentOS) 的安装程序项目 Anaconda 中
-> * snack: 官方 newt 库中还提供了 Python 封装库，名称为 snack
+> * snack: 官方 newt 库中还提供了 Python 封装库，名称为 snack(Snack 是 python 对 newt 的接口)
 >   * [snack 前世今生](https://github.com/meetbill/py_menu/wiki)
+>   * [snack 库提交历史](https://pagure.io/newt/history/snack.py?identifier=master)
 
 ## 3 假设和依赖
 
